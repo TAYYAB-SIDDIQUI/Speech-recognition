@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
 import os
+from tensorflow.keras.models import load_model
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
@@ -20,7 +21,8 @@ def upload_file():
     if file:
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(file_path)
-        return f"File uploaded successfully: {file.filename}"
+        model=load_model("saved.h5")
+        return f"prediction is: {model.predict(file.filename)}"
 
 if __name__ == '__main__':
     app.run(debug=True)
